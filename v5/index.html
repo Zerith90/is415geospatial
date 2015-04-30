@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html>
+<head> 
+	<title>QGIS2leaf webmap</title>
+	
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" /> <!-- we will us e this as the styling script for our webmap-->
+	<link rel="stylesheet" href="css/MarkerCluster.css" />
+	<link rel="stylesheet" href="css/MarkerCluster.Default.css" />
+	<link rel="stylesheet" type="text/css" href="css/own_style.css">
+	<link rel="stylesheet" href="css/label.css" />
+        <link rel="stylesheet" href="http://k4r573n.github.io/leaflet-control-osm-geocoder/Control.OSMGeocoder.css" />	
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script> <!-- this is the javascript file that does the magic-->
+	<script src="js/Autolinker.min.js"></script>
+        <script src="js/animatedmarker.js"></script>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+</head>
+<body>
+	<div id="map"></div> <!-- this is the initial look of the map. in most cases it is done externally using something like a map.css stylesheet were you can specify the look of map elements, like background color tables and so on.-->
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script> <!-- this is the javascript file that does the magic-->
+	<script src="js/leaflet-hash.js"></script>
+	<script src="js/label.js"></script>
+	<script src="http://k4r573n.github.io/leaflet-control-osm-geocoder/Control.OSMGeocoder.js"></script>
+	<script src="js/leaflet.markercluster.js"></script>
+	<input id="slide" type="range" min="0" max="1" step="0.1" value="1" onchange="updateOpacity(this.value)">
+				<script src='data/exp_stationssvy21.js' ></script>
+				
+				<script src='data/exp_RAILWAYSVY21.js' ></script>
+				
+				<script src='data/exp_MP14SUBZONEWEBPL21.js' ></script>
+				
+	<script>
+		var map = L.map('map', { zoomControl:true });
+		var hash = new L.Hash(map); //add hashes to html address to easy share locations
+		var additional_attrib = 'created with <a href="https://github.com/geolicious/qgis2leaf" target ="_blank">qgis2leaf</a> by <a href="http://www.geolicious.de" target ="_blank">Geolicious</a> & contributors<br>';
+	var feature_group = new L.featureGroup([]);
+
+	var raster_group = new L.LayerGroup([]);
+	
+		var basemap_0 = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
+			attribution: additional_attrib + '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'});	
+		basemap_0.addTo(map);	
+	var layerOrder=new Array();
+							function pop_MP14SUBZONEWEBPL21(feature, layer) {
+										
+	var popupContent = '<table><tr><th scope="row">OBJECTID</th><td>' + Autolinker.link(String(feature.properties['OBJECTID'])) + '</td></tr><tr><th scope="row">SUBZONE_NO</th><td>' + Autolinker.link(String(feature.properties['SUBZONE_NO'])) + '</td></tr><tr><th scope="row">SUBZONE_N</th><td>' + Autolinker.link(String(feature.properties['SUBZONE_N'])) + '</td></tr><tr><th scope="row">SUBZONE_C</th><td>' + Autolinker.link(String(feature.properties['SUBZONE_C'])) + '</td></tr><tr><th scope="row">CA_IND</th><td>' + Autolinker.link(String(feature.properties['CA_IND'])) + '</td></tr><tr><th scope="row">PLN_AREA_N</th><td>' + Autolinker.link(String(feature.properties['PLN_AREA_N'])) + '</td></tr><tr><th scope="row">PLN_AREA_C</th><td>' + Autolinker.link(String(feature.properties['PLN_AREA_C'])) + '</td></tr><tr><th scope="row">REGION_N</th><td>' + Autolinker.link(String(feature.properties['REGION_N'])) + '</td></tr><tr><th scope="row">REGION_C</th><td>' + Autolinker.link(String(feature.properties['REGION_C'])) + '</td></tr><tr><th scope="row">INC_CRC</th><td>' + Autolinker.link(String(feature.properties['INC_CRC'])) + '</td></tr><tr><th scope="row">FMEL_UPD_D</th><td>' + Autolinker.link(String(feature.properties['FMEL_UPD_D'])) + '</td></tr><tr><th scope="row">X_ADDR</th><td>' + Autolinker.link(String(feature.properties['X_ADDR'])) + '</td></tr><tr><th scope="row">Y_ADDR</th><td>' + Autolinker.link(String(feature.properties['Y_ADDR'])) + '</td></tr><tr><th scope="row">SHAPE_Leng</th><td>' + Autolinker.link(String(feature.properties['SHAPE_Leng'])) + '</td></tr><tr><th scope="row">SHAPE_Area</th><td>' + Autolinker.link(String(feature.properties['SHAPE_Area'])) + '</td></tr><tr><th scope="row">pop_densit</th><td>' + Autolinker.link(String(feature.properties['pop_densit'])) + '</td></tr><tr><th scope="row">pop_dens_1</th><td>' + Autolinker.link(String(feature.properties['pop_dens_1'])) + '</td></tr><tr><th scope="row">pop_dens_2</th><td>' + Autolinker.link(String(feature.properties['pop_dens_2'])) + '</td></tr><tr><th scope="row">pop_dens_3</th><td>' + Autolinker.link(String(feature.properties['pop_dens_3'])) + '</td></tr><tr><th scope="row">pop_dens_4</th><td>' + Autolinker.link(String(feature.properties['pop_dens_4'])) + '</td></tr><tr><th scope="row">pop_dens_5</th><td>' + Autolinker.link(String(feature.properties['pop_dens_5'])) + '</td></tr><tr><th scope="row">pop_dens_6</th><td>' + Autolinker.link(String(feature.properties['pop_dens_6'])) + '</td></tr><tr><th scope="row">pop_dens_7</th><td>' + Autolinker.link(String(feature.properties['pop_dens_7'])) + '</td></tr><tr><th scope="row">pop_dens_8</th><td>' + Autolinker.link(String(feature.properties['pop_dens_8'])) + '</td></tr><tr><th scope="row">pop_dens_9</th><td>' + Autolinker.link(String(feature.properties['pop_dens_9'])) + '</td></tr><tr><th scope="row">pop_dens10</th><td>' + Autolinker.link(String(feature.properties['pop_dens10'])) + '</td></tr></table>';
+	layer.bindPopup(popupContent);
+
+
+				}
+						
+				var exp_MP14SUBZONEWEBPL21JSON = new L.geoJson(exp_MP14SUBZONEWEBPL21,{
+					onEachFeature: pop_MP14SUBZONEWEBPL21,
+					style: function (feature) {
+						return {fillColor: feature.properties.color_qgis2leaf,
+								color: '#000',
+								weight: 1,
+								opacity: feature.properties.transp_qgis2leaf,
+								fillOpacity: feature.properties.transp_qgis2leaf};
+						}
+					});
+				feature_group.addLayer(exp_MP14SUBZONEWEBPL21JSON);
+				
+						//add comment sign to hide this layer on the map in the initial view.
+						exp_MP14SUBZONEWEBPL21JSON.addTo(map);
+							function pop_RAILWAYSVY21(feature, layer) {
+										
+	var popupContent = '<table><tr><th scope="row">osm_id</th><td>' + Autolinker.link(String(feature.properties['osm_id'])) + '</td></tr><tr><th scope="row">name</th><td>' + Autolinker.link(String(feature.properties['name'])) + '</td></tr><tr><th scope="row">type</th><td>' + Autolinker.link(String(feature.properties['type'])) + '</td></tr></table>';
+	layer.bindPopup(popupContent);
+
+
+				}
+						
+					var exp_RAILWAYSVY21JSON = new L.geoJson(exp_RAILWAYSVY21,{
+						onEachFeature: pop_RAILWAYSVY21,
+						style: function (feature) {
+							return {weight: feature.properties.radius_qgis2leaf,
+									color: feature.properties.color_qgis2leaf,
+									opacity: feature.properties.transp_qgis2leaf,
+									fillOpacity: feature.properties.transp_qgis2leaf};
+							}
+						});
+					feature_group.addLayer(exp_RAILWAYSVY21JSON);
+					
+						//add comment sign to hide this layer on the map in the initial view.
+						exp_RAILWAYSVY21JSON.addTo(map);
+							function pop_stationssvy21(feature, layer) {
+										
+	var popupContent = '<table><tr><th scope="row">Name</th><td>' + Autolinker.link(String(feature.properties['Name'])) + '</td></tr><tr><th scope="row">Add1</th><td>' + Autolinker.link(String(feature.properties['Add1'])) + '</td></tr><tr><th scope="row">Add2</th><td>' + Autolinker.link(String(feature.properties['Add2'])) + '</td></tr><tr><th scope="row">Latitude</th><td>' + Autolinker.link(String(feature.properties['Latitude'])) + '</td></tr><tr><th scope="row">Longtitude</th><td>' + Autolinker.link(String(feature.properties['Longtitude'])) + '</td></tr></table>';
+	layer.bindPopup(popupContent);
+
+
+				}
+						
+				var exp_stationssvy21JSON = new L.geoJson(exp_stationssvy21,{
+					onEachFeature: pop_stationssvy21,
+					pointToLayer: function (feature, latlng) {  
+						return L.circleMarker(latlng, {
+							radius: feature.properties.radius_qgis2leaf,
+							fillColor: feature.properties.color_qgis2leaf,
+
+							color: feature.properties.borderColor_qgis2leaf,
+							weight: 1,
+							opacity: feature.properties.transp_qgis2leaf,
+							fillOpacity: feature.properties.transp_qgis2leaf
+							})
+						}
+					});
+								feature_group.addLayer(exp_stationssvy21JSON);
+
+				var cluster_groupstationssvy21JSON= new L.MarkerClusterGroup({showCoverageOnHover: false});
+				cluster_groupstationssvy21JSON.addLayer(exp_stationssvy21JSON);
+				
+						//add comment sign to hide this layer on the map in the initial view.
+						cluster_groupstationssvy21JSON.addTo(map);
+		var title = new L.Control();
+		title.onAdd = function (map) {
+			this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+			this.update();
+			return this._div;
+	    };
+	    title.update = function () {
+			this._div.innerHTML = '<h2>This is the title</h2>This is the subtitle'
+		};
+		title.addTo(map);
+		var osmGeocoder = new L.Control.OSMGeocoder({
+            collapsed: false,
+            position: 'topright',
+            text: 'Find!',
+			});
+		osmGeocoder.addTo(map);
+		
+		var legend = L.control({position: 'bottomright'});
+		
+		legend.onAdd = function (map) {
+		var div = L.DomUtil.create('div', 'info legend');
+		div.innerHTML = "<h3>Legend</h3><table></table>";
+    		return div;
+		};
+		legend.addTo(map);
+
+	var baseMaps = {
+		'OSM Standard': basemap_0
+	};
+	L.control.layers(baseMaps,{"stationssvy21": cluster_groupstationssvy21JSON,"RAILWAYSVY21": exp_RAILWAYSVY21JSON,"MP14SUBZONEWEBPL21": exp_MP14SUBZONEWEBPL21JSON},{collapsed:false}).addTo(map);
+		function updateOpacity(value) {
+	}
+		map.fitBounds(feature_group.getBounds());
+	</script>
+</body>
+</html>
+	

@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html>
+<head> 
+	<title>QGIS2leaf webmap</title>
+	
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" /> <!-- we will us e this as the styling script for our webmap-->
+	<link rel="stylesheet" href="css/MarkerCluster.css" />
+	<link rel="stylesheet" href="css/MarkerCluster.Default.css" />
+	<link rel="stylesheet" type="text/css" href="css/own_style.css">
+	<link rel="stylesheet" href="css/label.css" />
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script> <!-- this is the javascript file that does the magic-->
+	<script src="js/Autolinker.min.js"></script>
+</head>
+<body>
+	<div id="map"></div> <!-- this is the initial look of the map. in most cases it is done externally using something like a map.css stylesheet were you can specify the look of map elements, like background color tables and so on.-->
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script> <!-- this is the javascript file that does the magic-->
+	<script src="js/leaflet-hash.js"></script>
+	<script src="js/label.js"></script>
+	<script src="js/leaflet.markercluster.js"></script>
+	
+				<script src='data/exp_SCHOOLS.js' ></script>
+				
+	<script>
+		var map = L.map('map', { zoomControl:true }).fitBounds([[1.14800731296,103.490298514],[1.53281212654,104.129870359]]);
+		var hash = new L.Hash(map); //add hashes to html address to easy share locations
+		var additional_attrib = 'created w. <a href="https://github.com/geolicious/qgis2leaf" target ="_blank">qgis2leaf</a> by <a href="http://www.geolicious.de" target ="_blank">Geolicious</a> & contributors<br>';
+	var feature_group = new L.featureGroup([]);
+
+	var raster_group = new L.LayerGroup([]);
+	
+		var basemap_0 = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
+			attribution: additional_attrib + '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'});	
+		basemap_0.addTo(map);
+		var basemap_1 = L.tileLayer('http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png', { 
+			attribution: additional_attrib + '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'});
+		var basemap_2 = L.tileLayer('http://a.tile.stamen.com/toner/{z}/{x}/{y}.png', { 
+			attribution: additional_attrib + 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data: &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'});	
+	var layerOrder=new Array();
+							function pop_SCHOOLS(feature, layer) {
+										
+	var popupContent = '<table><tr><th scope="row">SCH_NAME</th><td>' + Autolinker.link(String(feature.properties['SCH_NAME'])) + '</td></tr><tr><th scope="row">ADDRESS</th><td>' + Autolinker.link(String(feature.properties['ADDRESS'])) + '</td></tr><tr><th scope="row">SCH_TYPE</th><td>' + Autolinker.link(String(feature.properties['SCH_TYPE'])) + '</td></tr><tr><th scope="row">SCH_CODE</th><td>' + Autolinker.link(String(feature.properties['SCH_CODE'])) + '</td></tr><tr><th scope="row">SCH_RANK</th><td>' + Autolinker.link(String(feature.properties['SCH_RANK'])) + '</td></tr><tr><th scope="row">POSTCODE</th><td>' + Autolinker.link(String(feature.properties['POSTCODE'])) + '</td></tr></table>';
+	layer.bindPopup(popupContent);
+
+
+				}
+						
+				var exp_SCHOOLSJSON = new L.geoJson(exp_SCHOOLS,{
+					onEachFeature: pop_SCHOOLS,
+					pointToLayer: function (feature, latlng) {
+                                            console.log(feature)
+						return L.marker(latlng, {icon: L.icon({
+							iconUrl: feature.properties.ICON_EXP,
+							iconSize:     [24, 24], // size of the icon change this to scale your icon (first coordinate is x, second y from the upper left corner of the icon)
+							iconAnchor:   [12, 12], // point of the icon which will correspond to marker's location (first coordinate is x, second y from the upper left corner of the icon)
+							popupAnchor:  [0, -14] // point from which the popup should open relative to the iconAnchor (first coordinate is x, second y from the upper left corner of the icon)
+			 				})
+			 			})
+					}}
+				);
+				
+				feature_group.addLayer(exp_SCHOOLSJSON);
+				
+						//add comment sign to hide this layer on the map in the initial view.
+						exp_SCHOOLSJSON.addTo(map);
+		var title = new L.Control();
+		title.onAdd = function (map) {
+			this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+			this.update();
+			return this._div;
+	    };
+	    title.update = function () {
+			this._div.innerHTML = '<h2>This is the title</h2>This is the subtitle'
+		};
+		title.addTo(map);
+	var baseMaps = {
+		'OSM Standard': basemap_0,
+		'OSM Black & White': basemap_1,
+		'Stamen Toner': basemap_2};
+	L.control.layers(baseMaps,{"SCHOOLS": exp_SCHOOLSJSON},{collapsed:false}).addTo(map);
+	L.control.scale({options: {position: 'bottomleft',maxWidth: 100,metric: true,imperial: false,updateWhenIdle: false}}).addTo(map);
+	</script>
+</body>
+</html>
+	

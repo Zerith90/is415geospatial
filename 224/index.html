@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html>
+    <head> 
+        <title>ASSIGNMENT 1</title>
+
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" /> <!-- we will us e this as the styling script for our webmap-->
+        <link rel="stylesheet" href="css/MarkerCluster.css" />
+        <link rel="stylesheet" href="css/MarkerCluster.Default.css" />
+        <link rel="stylesheet" type="text/css" href="css/own_style.css">
+        <link rel="stylesheet" href="css/label.css" />
+        <link rel="stylesheet" href="css/tileLegend.css" />
+        <link rel="stylesheet" href="http://k4r573n.github.io/leaflet-control-osm-geocoder/Control.OSMGeocoder.css" />	
+        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script> <!-- this is the javascript file that does the magic-->
+        <script src="js/Autolinker.min.js"></script>
+
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    </head>
+    <body>
+        <div id="map" class="tilelegend-expended"></div>
+        <div id="leaflet-control-tilelegend-container"></div><!-- this is the initial look of the map. in most cases it is done externally using something like a map.css stylesheet were you can specify the look of map elements, like background color tables and so on.-->
+       <script src='js/jquery.js' ></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script> <!-- this is the javascript file that does the magic-->
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/label.js"></script>
+        <script src="http://k4r573n.github.io/leaflet-control-osm-geocoder/Control.OSMGeocoder.js"></script>
+        <script src="js/leaflet.markercluster.js"></script>
+        <input id="slide" type="range" min="0" max="1" step="0.1" value="1" onchange="updateOpacity(this.value)">
+        <script src='data/exp_RAILSWITHOUTEXTRAS.js' ></script>
+        <script src="js/plugins.js"></script>
+        <script src='js/tileLegend.js' ></script>
+        <script src='data/exp_stationssvy21.js' ></script>
+        <script src='data/exp_modeoftransportvoronoi.js' ></script>
+
+        <script src='data/exp_mot.js' ></script>
+        <script src='data/exp_subzonesvy21.js' ></script>
+        <script src="js/main.js"></script>
+    </body>
+</html>
